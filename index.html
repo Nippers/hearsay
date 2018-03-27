@@ -1,0 +1,137 @@
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Barrio" rel="stylesheet">
+</head>
+<body>
+  <h1>Is it hearsay?</h1>
+  <div id="questionBox">
+    Is it a statement made out of court?
+  </div>
+  <br>
+  <div id="buttons">
+    <button id="yesButton" onclick="yesAnswer()">YES</button>
+    <button id="maybeButton" onclick="maybeAnswer()">MAYBE</button>
+    <button id="noButton" onclick="noAnswer()">NO</button>
+    <br><br>
+    <button id="restartButton" onclick="restart()">RESTART</button>
+  </div>
+
+
+</body>
+
+<style>
+
+  body{
+    font-family: monospace;
+    font-size: 18px;
+    text-align: center;
+  }
+  h1{
+    font-family: 'Barrio', cursive;
+    font-size: 50px;
+  }
+  button{
+    height:80px;
+    width:80px;
+    border: 2px solid black;
+    font-family: monospace;
+    font-size: 20px;
+  }
+  button:hover{
+      border: 4px solid black;
+  }
+  button:focus {outline:0;}
+  #yesButton{
+    background-color: #88cc00;
+  }
+  #maybeButton{
+    background-color: #ffcc00;
+  }
+  #noButton{
+    background-color: orangered;
+  }
+  #restartButton{
+    display:none;
+    width:120px;
+    height:60px;
+    background-color: white;
+  }
+  #restartButton:hover{
+    background-color: pink;
+  }
+</style>
+
+<script>
+  var questionCount = 0;
+  var questionBox = document.getElementById("questionBox");
+  var maybeButton = document.getElementById("maybeButton");
+  var questions = [];
+  questions.push("Is it a statement made out of court?");
+  questions.push("Is it something a person did, intending to make an assertion?");
+  questions.push("<b><u>It is not hearsay!</u></b>");
+  questions.push("Is it being offered to prove what the statement asserted?");
+  questions.push("<b><u>It is hearsay!</u></b>");
+  questions.push("Is it being offered to prove the effect the statement had on the listener?");
+  questions.push("Is it being offered to prove that the listener believed the statement?");
+  questions.push("Is it being offered to prove the statement is false?");
+  questions.push("Is it a contractual act, like an offer?");
+
+  function yesAnswer(){
+    questionBox.innerHTML += "<br>&#8595<div style='color:green'><b>Yes</b></div>";
+    if(questionCount === 0 || questionCount === 1){
+      questionCount = 3;
+      maybeButton.style.display = "inline-block";
+    }else if(questionCount === 3){
+      questionCount = 4;
+      end();
+    }else if(questionCount === 5 || questionCount === 6 || questionCount === 7|| questionCount === 8){
+      questionCount = 2;
+      end();
+    }
+    nextQuestion();
+  }
+  function maybeAnswer(){
+    questionBox.innerHTML += "<br>&#8595<div style='color:orange'><b>Maybe</b></div>";
+    if(questionCount === 0){
+      questionCount = 1;
+      maybeButton.style.display = "none";
+    }else if(questionCount === 3){
+      questionCount = 5;
+      maybeButton.style.display = "none";
+    }
+    nextQuestion();
+  }
+  function noAnswer(){
+    questionBox.innerHTML += "<br>&#8595<div style='color:red'><b>No</b></div>";
+    if(questionCount === 0){
+      questionCount = 2;
+      end();
+    }else if(questionCount === 1 || questionCount === 3){
+      questionCount = 2;
+      end();
+    }else if(questionCount === 5){
+      questionCount = 6;
+      maybeButton.style.display = "none";
+    }else if(questionCount === 6){
+      questionCount = 7;
+    }else if(questionCount === 7){
+      questionCount = 8;
+    }else if(questionCount === 8){
+      questionCount = 4;
+      end();
+    }
+    nextQuestion();
+  }
+  function nextQuestion(){
+    questionBox.innerHTML += "&#8595<br>"+questions[questionCount];
+  }
+  function end(){
+    maybeButton.style.display = "none";
+    document.getElementById("yesButton").style.display = "none";
+    document.getElementById("noButton").style.display = "none";
+    document.getElementById("restartButton").style.display = "inline-block";
+  }
+  function restart(){
+    location.reload();
+  }
+
+</script>
